@@ -17,11 +17,18 @@ int *dutyCycle_B= new int[MAX_STEPS];
 ISR(TIMER1_OVF_vect){
   
     
-    OCR1B = dutyCycle_B[counter];
-    OCR1A = dutyCycle_A[counter];
+    if(ct){
+      OCR1B = dutyCycle_B[counter];
+      OCR1A = 0;
+    }
+    else{
+      OCR1A = dutyCycle_A[counter];
+      OCR1B = 0;
+    }
    // OCR1A = counterRegister/2;//dutyCycle_A[counter];
     counter++;
-    if(counter==(steps)){
+    if(counter==(steps/2)){
+      ct = !ct;
       counter=0;
     }
 
@@ -65,7 +72,6 @@ void SPWM::begin( bool verbros){
 
 void SPWM::set_freq(int frequency){
   
-
 }
 
 void SPWM::setup_freq(){
@@ -93,28 +99,6 @@ void SPWM::setup_freq(){
     pinMode(13,OUTPUT);
     pinMode(11, OUTPUT);
     pinMode(12, OUTPUT);
-//   cli(); // stop global interrupt
-//       // Register initilisation, see datasheet for more detail.
-//     TCCR1A = 0b10100010;
-//        /*10 clear on match, set at BOTTOM for compA.
-//          10 clear on match, set at BOTTOM for compB.
-//          00
-//          10 WGM1 1:0 for waveform 15.
-//        */
-//     TCCR1B = 0b00011001;
-//        /*000
-//          11 WGM1 3:2 for waveform 15.
-//          001 no prescale on the counter.
-//        */
-//     //TIMSK1 = 0b00000001;
-//        /*0000000
-//          1 TOV1 Flag interrupt enable. 
-//        */
-//     ICR1   = counterRegister;     // Period for 16MHz crystal, for a switching frequency of 100KHz for 400 subdevisions per 50Hz sin wave cycle.
-//     sei();             // Enable global interrupts.
-//     //DDRB = 0b11111111; // Set PB1 and PB2 as outputs.
-//     pinMode(12,OUTPUT);
-//     pinMode(13,OUTPUT);
 }
 char SPWM::intTochar(int num) {
     char c;
@@ -192,7 +176,9 @@ void SPWM::start(){
 }
 
 void SPWM::stop(){
+  while(counter>0);
+  TIMSK1 = 0;
   OCR1B = 0;
   OCR1A = 0;
-  TIMSK1 = 0;
+  counter = 0;
 }
