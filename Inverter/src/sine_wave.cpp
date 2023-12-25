@@ -139,6 +139,7 @@ bool SPWM::set_carrier_freq(int carrier_freq){
     dutyCycle_A[i] = counterRegister * solve(TetaToradian(i*slope)); 
     dutyCycle_B[i] = counterRegister * solve(TetaToradian(i*slope));
   }
+  //setup_freq();
   return 1;  
 }
 
@@ -155,7 +156,7 @@ void SPWM::setup_freq(){
          11 WGM1 3:2 for waveform 15.
          001 no prescale on the counter.
        */
-    TIMSK1 = 0b00000001;
+    //TIMSK1 = 0b00000001;
        /*0000000
          1 TOV1 Flag interrupt enable. 
        */
@@ -163,7 +164,7 @@ void SPWM::setup_freq(){
     // ICR1H = 0x01;     // Period for 16MHz crystal, for a switching frequency of 100KHz for 200 subdevisions per 50Hz sin wave cycle.
     // ICR1L = 0xf4;
     sei();             // Enable global interrupts.
-    DDRB = 0b00000110; // Set PB1 and PB2 as outputs.
+    //DDRB = 0b00000110; // Set PB1 and PB2 as outputs.
     pinMode(13,OUTPUT);
     pinMode(11, OUTPUT);
     pinMode(12, OUTPUT);
@@ -257,6 +258,17 @@ void SPWM::start(){
   TIMSK1 = 1;
   ON_flag = true;
   delay(500);
+}
+
+void SPWM::soft_start(){
+  int i = 100;
+  set_amplitude(i);
+  TIMSK1 = 1;
+  ON_flag = true;
+  for(i=i; i>0; i--){
+    set_amplitude(i);
+    delay(10);
+  }
 }
 
 void SPWM::stop(){

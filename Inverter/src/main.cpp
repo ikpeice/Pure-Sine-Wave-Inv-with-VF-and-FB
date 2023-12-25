@@ -1,68 +1,71 @@
-#include <Arduino.h>
+#define BUTTONS_ENABLED
+
+#include <main.h>
 #include <sine_wave.hpp>
 
-int output_freq = 50; // 50Hz
-#define carrier_freq 10 //7KHz
+#include <LiquidCrystal_I2C.h>
 
+LiquidCrystal_I2C lcd(0x07,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
+
+int output_freq = 50; // 50Hz
+int carrier_freq = 15; //7KHz
 SPWM inverter(output_freq, carrier_freq);
 
-#define button1 4
-#define button2 6
-#define led 5
+
 long currnt,task1,task2;
 bool ON = false;
 
-// int duty = 500;
-//  float p = 0.1;
+int feedback_pin = A0;
+
 
 void setup() {
     Serial.begin(9600);
+    lcd.init();
+    lcd.backlight();
+    lcd.setCursor(0,0);
+    lcd.print("Smart Inverter");
+
     inverter.begin(true);
-    delay(500);
+    delay(50);
     //inverter.set_amplitude(1);
-    inverter.start();
-    //inverter.set_amplitude(50);
-    // delay(500);
-    // float p=9;
-    // for(int i=1; i<50; i++){
-    //     inverter.set_amplitude(i);
-    //     delay(100);
-    // }
-//  int d1 = (p*duty)/100;
-// Serial.println("DUty = "+String(d1));
-
-    pinMode(button1,INPUT);
-    pinMode(button2,INPUT);
+    inverter.soft_start();
+    pinMode(up_button,INPUT);
+    pinMode(enter_button,INPUT);
+    pinMode(down_button,INPUT);
     pinMode(led,OUTPUT);
-
+    
 }
 
 void loop() {
     currnt = millis();
-    // if((currnt-task1) > 1000){
-    //     if(ON){
-    //         inverter.start();
-    //         ON = !ON;
-    //     }
-    //     else{
-    //         inverter.stop();
-    //         ON = !ON;
-    //     }
-    //     task1 = currnt;
-    // }
+    if((currnt-task1) > 10){
+        //lcd.clear();
+        lcd.setCursor(0,1);
+        int d = analogRead(feedback_pin);
+        float c = 0.09775*d;
+        lcd.print(c);
+        inverter.set_amplitude(c);
+        task1 = currnt;
+    }
     if((currnt-task2)>10){
-        if(digitalRead(button1)){
-            delay(100);
-            
+        if(get_key()==UP_KEY){
+            delay(10);
+            output_freq--;
+            inverter.set_amplitude(output_freq);
+            digitalWrite(led,!digitalRead(led));
+        }
+        if(get_key()==DOWN_KEY){
+            delay(10);
             output_freq++;
             inverter.set_amplitude(output_freq);
             digitalWrite(led,!digitalRead(led));
         }
-        if(digitalRead(button2)){
+        if(get_key()==ENTER_KEY){
             delay(100);
-            
-            output_freq--;
-            inverter.set_amplitude(output_freq);
+            //inverter.stop();
+            carrier_freq--;
+            inverter.set_carrier_freq(carrier_freq);
+            //inverter.start();
             digitalWrite(led,!digitalRead(led));
         }
         task2 = currnt;

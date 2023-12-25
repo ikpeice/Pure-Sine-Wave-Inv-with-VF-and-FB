@@ -1,9 +1,7 @@
-#ifndef SINE_WAVE_H
-#define SINE_WAVE_H
+#ifndef SINE_WAVE_HPP
+#define SINE_WAVE_HPP
 
 #include <Arduino.h>
-
-
 
 
 class SPWM{
@@ -45,6 +43,7 @@ public:
     void floatTocharArray(char *s, double num);
     void begin( bool verbros);
     void start();
+    void soft_start();
     void stop();
     bool set_output_freq(int output_freq);
     bool set_carrier_freq(int carrier_freq);
