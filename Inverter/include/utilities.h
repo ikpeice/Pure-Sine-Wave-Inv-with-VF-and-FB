@@ -11,7 +11,7 @@
 #include "Keypad.c"
 #endif
 #ifdef LCD_ENABLED
-    #include "lcd_display.c"
+    #include "display.hpp"
 #endif
 #ifdef LED_ENABLED
     #include "led_display.c"

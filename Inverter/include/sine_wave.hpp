@@ -43,7 +43,7 @@ public:
     void floatTocharArray(char *s, double num);
     void begin( bool verbros);
     void start();
-    void soft_start();
+    void soft_start(int _delay);
     void stop();
     bool set_output_freq(int output_freq);
     bool set_carrier_freq(int carrier_freq);

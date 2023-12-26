@@ -52,8 +52,8 @@ void SPWM::begin( bool verbros){
   // delete old buffer and reallocate memory with size = steps
   delete [] dutyCycle_A; 
   delete [] dutyCycle_B;
-  dutyCycle_A = new int[steps];
-  dutyCycle_B = new int[steps];
+  dutyCycle_A = new int[steps/2];
+  dutyCycle_B = new int[steps/2];
 
   float slope = 180/((float)steps/2); // get slope for max swing per half waveform
   for(unsigned int i=0; i<steps/2; i++){
@@ -93,10 +93,10 @@ bool SPWM::set_output_freq(int output_freq){
   delete [] dutyCycle_B;
   delete [] _dutyCycle_A;
   delete [] _dutyCycle_B;
-  dutyCycle_A = new int[steps];
-  dutyCycle_B = new int[steps];
-  _dutyCycle_A = new int[steps];
-  _dutyCycle_B = new int[steps];
+  dutyCycle_A = new int[steps/2];
+  dutyCycle_B = new int[steps/2];
+  _dutyCycle_A = new int[steps/2];
+  _dutyCycle_B = new int[steps/2];
 
   float slope = 180/((float)steps/2); // get slope for max swing per half waveform
   for(unsigned int i=0; i<steps/2; i++){
@@ -129,10 +129,10 @@ bool SPWM::set_carrier_freq(int carrier_freq){
   delete [] dutyCycle_B;
   delete [] _dutyCycle_A;
   delete [] _dutyCycle_B;
-  dutyCycle_A = new int[steps];
-  dutyCycle_B = new int[steps];
-  _dutyCycle_A = new int[steps];
-  _dutyCycle_B = new int[steps];
+  dutyCycle_A = new int[steps/2];
+  dutyCycle_B = new int[steps/2];
+  _dutyCycle_A = new int[steps/2];
+  _dutyCycle_B = new int[steps/2];
 
   float slope = 180/((float)steps/2); // get slope for max swing per half waveform
   for(unsigned int i=0; i<steps/2; i++){
@@ -260,14 +260,14 @@ void SPWM::start(){
   delay(500);
 }
 
-void SPWM::soft_start(){
+void SPWM::soft_start(int _delay){
   int i = 100;
   set_amplitude(i);
   TIMSK1 = 1;
   ON_flag = true;
   for(i=i; i>0; i--){
     set_amplitude(i);
-    delay(10);
+    delay(_delay);
   }
 }
 
