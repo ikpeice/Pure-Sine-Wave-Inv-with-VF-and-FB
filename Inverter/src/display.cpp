@@ -1,18 +1,45 @@
 //#define LCD_ENABLED
-//#include <utilities.h>
-#include <display.hpp>
+//#include <main.h>
 
+#include <display.hpp>
 LiquidCrystal_I2C lcd(0x07,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
 
-Display::Display(/* args */)
+Inv_Data *data;
+
+String dis_data[] ={     
+    "Status: ",
+    "Output AC: ",
+    "Input AC: ",
+        "Output Freq: ",
+       "Input Freq: ",
+       "Bat. Volt: ",
+      "Output Power: ",
+      "Carrier Freq: ",
+};
+
+    String Status_;
+    String output_freq_; // 50Hz
+    String input_freq_;
+    String carrier_freq_; //7KHz
+    String batt_volt_;
+    String output_power_;
+    String input_AC_;
+    String output_AC_;
+
+Display::Display(Inv_Data *_data)
 {
+    data = _data;
 }
 
 Display::~Display()
 {
 }
 
-void Display::start(){
+void Display::clear(){
+    lcd.clear();
+}
+
+void Display::begin(){
     lcd.init();
     lcd.backlight();
     lcd.clear();
@@ -21,7 +48,54 @@ void Display::start(){
     lcd.print("Vwersion 1.1.2");
 }
 
-void Display::page1(){
-    
+Lines lines[8] = {
+    {&dis_data[0],  &Status_},
+    {&dis_data[1], &output_AC_},
+    {&dis_data[2], &input_AC_},
+    {&dis_data[3], &batt_volt_},
+    {&dis_data[4],  &input_freq_},
+    {&dis_data[5], &output_freq_},
+    {&dis_data[6], &carrier_freq_},
+    {&dis_data[7], &output_power_}
+
+};
+void Display::show(int key=0){
+    // if(key<=0)return;
+    static int i=0;
+    lines->update();
+    lcd.clear();
+
+    lcd.setCursor(0,0);
+    lines[i].show();
+    lcd.setCursor(0,1);
+    lines[i+1].show();
+    lcd.setCursor(0,2);
+    lines[i+2].show();
+    lcd.setCursor(0,3);
+    lines[i+3].show();
+    if(key == 1)i++;
+    if(key == 3)i--;
+    if(i>=4){
+        i = 4;
+    }else if(i<0){
+        i=0;
+    }
 }
+
+
+void Lines::show(){
+    lcd.print(*a);lcd.print(*b);
+}
+void Lines::update(){
+    Status_ = (data->Status > 0)? "ON":"OFF";
+    output_freq_ = String(data->output_freq); // 50Hz
+    input_freq_ = String(data->input_freq);
+    carrier_freq_ = String(data->carrier_freq); //7KHz
+    batt_volt_ = String(data->batt_volt);
+    output_power_ = String(data->output_power);
+    input_AC_ = String(data->input_AC);
+    output_AC_ = String(data->output_AC);   
+}
+
+
 

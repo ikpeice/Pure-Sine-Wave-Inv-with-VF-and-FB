@@ -2,6 +2,7 @@
 #define SINE_WAVE_HPP
 
 #include <Arduino.h>
+#include "utilities.h"
 
 
 class SPWM{
@@ -34,14 +35,14 @@ private:
     void setup_freq();
     int len(char s[]);
     char intTochar(int num);
-    
+    Inv_Data *_inv_data;
 
 
 public:
-    SPWM(int output_freq, int carrier_freq);
+    SPWM(Inv_Data *data);
     ~SPWM();
     void floatTocharArray(char *s, double num);
-    void begin( bool verbros);
+    void begin(bool verbros);
     void start();
     void soft_start(int _delay);
     void stop();

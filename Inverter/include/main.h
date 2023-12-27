@@ -1,15 +1,10 @@
 #ifndef MAIN_H
 #define MAIN_H
-
-
-
-
 #define led 5
-int output_freq = 50; // 50Hz
-int carrier_freq = 15; //7KHz
 
-long currnt,task1,task2;
-bool ON = false;
+long currnt,task1,task2, task3,task4;
+int feedback_pin = 54;
+int peger=1;
 
-int feedback_pin = A0;
+
 #endif

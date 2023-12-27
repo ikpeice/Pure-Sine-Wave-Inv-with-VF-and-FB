@@ -1,10 +1,13 @@
 
+#ifndef BUTTON_KEYS_C
+#define BUTTON_KEYS_C
 #include <Arduino.h>
 
 /*Keypad pin setup*/
 #define up_button 22
 #define enter_button 23
 #define down_button 24
+
 enum key{
     UP_KEY = 1,
     ENTER_KEY,
@@ -25,3 +28,5 @@ int get_key(){
         return 0;
     }
 }
+
+#endif

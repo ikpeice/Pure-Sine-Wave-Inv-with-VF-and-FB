@@ -29,10 +29,11 @@ ISR(TIMER1_OVF_vect){
 
 }
 
-SPWM::SPWM(int output_freq,int carrier_freq)
+SPWM::SPWM(Inv_Data *data)
 {
-  _output_freq = output_freq;
-  _carrier_freq = carrier_freq;
+  _inv_data = data;
+  // _inv_data->output_freq = data->output_freq;
+  // _inv_data->carrier_freq = data->carrier_freq;
 
 }
 
@@ -42,11 +43,11 @@ SPWM::~SPWM()
 /*
 
 */
-void SPWM::begin( bool verbros){
+void SPWM::begin(bool verbros){
   debug = verbros;
-  _carrier_period = ((1/(float)_carrier_freq) * 1000);
+  _carrier_period = ((1/(float)_inv_data->carrier_freq) * 1000);
   counterRegister = (int)_carrier_period/timer_increament;
-  float step = (1/(float)_output_freq)*1000;
+  float step = (1/(float)_inv_data->output_freq)*1000;
   steps = (step / ((float)_carrier_period))*1000;
 
   // delete old buffer and reallocate memory with size = steps
@@ -63,7 +64,7 @@ void SPWM::begin( bool verbros){
 
   if(debug){
     Serial.println("Setup duty done!");
-    Serial.println("Output Freq: "+String(_output_freq)+"Hz");
+    Serial.println("Output Freq: "+String(_inv_data->output_freq)+"Hz");
     Serial.println("Carrier Period: "+String(_carrier_period)+"us");
     Serial.println("Timer counter: "+String(counterRegister));
     Serial.println("Steps: "+String(steps));
@@ -84,8 +85,8 @@ bool SPWM::set_output_freq(int output_freq){
       Serial.println("Output frequency out of range");
     return 0;
   }
-  _output_freq = output_freq;
-  float step = (1/(float)_output_freq)*1000;
+  _inv_data->output_freq = output_freq;
+  float step = (1/(float)_inv_data->output_freq)*1000;
   steps = (step / ((float)_carrier_period))*1000;
 
   // delete old buffer and reallocate memory with size = steps
@@ -103,7 +104,13 @@ bool SPWM::set_output_freq(int output_freq){
     dutyCycle_A[i] = counterRegister * solve(TetaToradian(i*slope)); 
     dutyCycle_B[i] = counterRegister * solve(TetaToradian(i*slope)); 
   }
-  if(debug)Serial.println(steps);
+    if(debug){
+    Serial.println("Setup duty done!");
+    Serial.println("Output Freq: "+String(_inv_data->output_freq)+"Hz");
+    Serial.println("Carrier Period: "+String(_carrier_period)+"us");
+    Serial.println("Timer counter: "+String(counterRegister));
+    Serial.println("Steps: "+String(steps));
+  }
   return 1;
 
 }
@@ -118,10 +125,10 @@ bool SPWM::set_carrier_freq(int carrier_freq){
       Serial.println("Carrier frequency too low");
     return 0;
   }
-  _carrier_freq = carrier_freq;
-  _carrier_period = ((1/(float)_carrier_freq) * 1000);
+  _inv_data->carrier_freq = carrier_freq;
+  _carrier_period = ((1/(float)_inv_data->carrier_freq) * 1000);
   counterRegister = (int)_carrier_period/timer_increament;
-  float step = (1/(float)_output_freq)*1000;
+  float step = (1/(float)_inv_data->output_freq)*1000;
   steps = (step / ((float)_carrier_period))*1000;
 
   // delete old buffer and reallocate memory with size = steps
@@ -139,7 +146,13 @@ bool SPWM::set_carrier_freq(int carrier_freq){
     dutyCycle_A[i] = counterRegister * solve(TetaToradian(i*slope)); 
     dutyCycle_B[i] = counterRegister * solve(TetaToradian(i*slope));
   }
-  //setup_freq();
+    if(debug){
+    Serial.println("Setup duty done!");
+    Serial.println("Output Freq: "+String(_inv_data->output_freq)+"Hz");
+    Serial.println("Carrier Period: "+String(_carrier_period)+"us");
+    Serial.println("Timer counter: "+String(counterRegister));
+    Serial.println("Steps: "+String(steps));
+  }
   return 1;  
 }
 
@@ -258,6 +271,7 @@ void SPWM::start(){
   TIMSK1 = 1;
   ON_flag = true;
   delay(500);
+  _inv_data->Status = 1;
 }
 
 void SPWM::soft_start(int _delay){
@@ -265,6 +279,7 @@ void SPWM::soft_start(int _delay){
   set_amplitude(i);
   TIMSK1 = 1;
   ON_flag = true;
+  _inv_data->Status = 1;
   for(i=i; i>0; i--){
     set_amplitude(i);
     delay(_delay);
@@ -277,5 +292,6 @@ void SPWM::stop(){
   OCR1B = 0;
   OCR1A = 0;
   ON_flag = false;
+  _inv_data->Status = 0;
   counter = 0;
 }

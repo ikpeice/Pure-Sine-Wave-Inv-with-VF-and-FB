@@ -1,7 +1,7 @@
 #ifndef DISPLAY_HPP
 #define DISPLAY_HPP
 
-#include <main.h>
+//#include <main.h>
 #include <utilities.h>
 #include <LiquidCrystal_I2C.h>
 
@@ -12,11 +12,30 @@ private:
     
     /* data */
 public:
-    Display(/* args */);
+    Display(Inv_Data *_data);
     ~Display();
-    void start();
-    void page1();
+    void begin();
+    void show(int key);
+    void clear();
 };
+
+class Lines{
+private:
+
+
+    String *a, *b;
+public:
+    Lines(String* _a, String* _b):
+    a(_a),b(_b)
+    {
+
+    }
+    void show();
+    void update();
+};
+
+
+
 
 
 
