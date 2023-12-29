@@ -8,10 +8,10 @@
         {
             "name": "PlatformIO",
             "includePath": [
-                "C:/Users/SpaceInAfrica/Documents/PlatformIO/Projects/Pure-Sine-Wave-Inv-with-VF-and-FB/Inverter/include",
-                "C:/Users/SpaceInAfrica/Documents/PlatformIO/Projects/Pure-Sine-Wave-Inv-with-VF-and-FB/Inverter/src",
-                "C:/Users/SpaceInAfrica/Documents/PlatformIO/Projects/Pure-Sine-Wave-Inv-with-VF-and-FB/Inverter/.pio/libdeps/megaatmega2560/LiquidCrystal/src",
-                "C:/Users/SpaceInAfrica/Documents/PlatformIO/Projects/Pure-Sine-Wave-Inv-with-VF-and-FB/Inverter/.pio/libdeps/megaatmega2560/LiquidCrystal_I2C",
+                "C:/Users/SpaceInAfrica/Documents/CodeBlocks/New folder/2/1/Pure-Sine-Wave-Inv-with-VF-and-FB/Inverter/include",
+                "C:/Users/SpaceInAfrica/Documents/CodeBlocks/New folder/2/1/Pure-Sine-Wave-Inv-with-VF-and-FB/Inverter/src",
+                "C:/Users/SpaceInAfrica/Documents/CodeBlocks/New folder/2/1/Pure-Sine-Wave-Inv-with-VF-and-FB/Inverter/.pio/libdeps/megaatmega2560/LiquidCrystal/src",
+                "C:/Users/SpaceInAfrica/Documents/CodeBlocks/New folder/2/1/Pure-Sine-Wave-Inv-with-VF-and-FB/Inverter/.pio/libdeps/megaatmega2560/LiquidCrystal_I2C",
                 "C:/Users/SpaceInAfrica/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                 "C:/Users/SpaceInAfrica/.platformio/packages/framework-arduino-avr/cores/arduino",
                 "C:/Users/SpaceInAfrica/.platformio/packages/framework-arduino-avr/variants/mega",
@@ -24,10 +24,10 @@
             "browse": {
                 "limitSymbolsToIncludedHeaders": true,
                 "path": [
-                    "C:/Users/SpaceInAfrica/Documents/PlatformIO/Projects/Pure-Sine-Wave-Inv-with-VF-and-FB/Inverter/include",
-                    "C:/Users/SpaceInAfrica/Documents/PlatformIO/Projects/Pure-Sine-Wave-Inv-with-VF-and-FB/Inverter/src",
-                    "C:/Users/SpaceInAfrica/Documents/PlatformIO/Projects/Pure-Sine-Wave-Inv-with-VF-and-FB/Inverter/.pio/libdeps/megaatmega2560/LiquidCrystal/src",
-                    "C:/Users/SpaceInAfrica/Documents/PlatformIO/Projects/Pure-Sine-Wave-Inv-with-VF-and-FB/Inverter/.pio/libdeps/megaatmega2560/LiquidCrystal_I2C",
+                    "C:/Users/SpaceInAfrica/Documents/CodeBlocks/New folder/2/1/Pure-Sine-Wave-Inv-with-VF-and-FB/Inverter/include",
+                    "C:/Users/SpaceInAfrica/Documents/CodeBlocks/New folder/2/1/Pure-Sine-Wave-Inv-with-VF-and-FB/Inverter/src",
+                    "C:/Users/SpaceInAfrica/Documents/CodeBlocks/New folder/2/1/Pure-Sine-Wave-Inv-with-VF-and-FB/Inverter/.pio/libdeps/megaatmega2560/LiquidCrystal/src",
+                    "C:/Users/SpaceInAfrica/Documents/CodeBlocks/New folder/2/1/Pure-Sine-Wave-Inv-with-VF-and-FB/Inverter/.pio/libdeps/megaatmega2560/LiquidCrystal_I2C",
                     "C:/Users/SpaceInAfrica/.platformio/packages/framework-arduino-avr/libraries/Wire/src",
                     "C:/Users/SpaceInAfrica/.platformio/packages/framework-arduino-avr/cores/arduino",
                     "C:/Users/SpaceInAfrica/.platformio/packages/framework-arduino-avr/variants/mega",
