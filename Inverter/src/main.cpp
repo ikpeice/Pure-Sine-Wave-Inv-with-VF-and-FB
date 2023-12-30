@@ -14,21 +14,27 @@ Inv_Data inv_data;
 
 
 SPWM inverter(&inv_data);
-Display disp(&inv_data);
-
+Display disp;
 
 
 void setup() {
+    pinMode(13,OUTPUT);
+    pinMode(11, OUTPUT);
+    pinMode(12, OUTPUT);
+    pinMode(10,OUTPUT);
+    pinMode(9,OUTPUT);
+    digitalWrite(10,0);
+    digitalWrite(9,0);
     Serial.begin(9600);
-    // inv_data.carrier_freq = 10;
-    // inv_data.output_freq = 50;
-    disp.begin();
+    inv_data.carrier_freq = 20;
+    inv_data.output_freq = 50;
+    disp.begin(&inv_data);
 
     inverter.begin(true);
     delay(50);
     //inverter.set_amplitude(1);
-    //inverter.soft_start(2);
-    inverter.start();
+    inverter.soft_start(50);
+    //inverter.start();
     pinMode(up_button,INPUT);
     pinMode(enter_button,INPUT);
     pinMode(down_button,INPUT);
@@ -38,34 +44,38 @@ void setup() {
 
 void loop() {
     currnt = millis();
-    if((currnt-task1) > 10){
+    if((currnt-task1) > 1000){
         //lcd.clear();
         //lcd.setCursor(0,1);
-        int d = analogRead(feedback_pin);
-        float c = 0.09775*d;
+        
+        int b = analogRead(feedback_pin);
+        int c = 0.2932*b; 
+        float fb = map(b,0,1023,0,100);//(c>output_target)? -1:1;
         //lcd.print(c);
         inv_data.output_AC = c;
-        inverter.set_amplitude(c);
+        inv_data.batt_volt = fb;
+        inverter.set_amplitude(fb);
         task1 = currnt;
     }
     if((currnt-task2)>10){
-        if(get_key()==UP_KEY){
-            delay(10);
-            inv_data.output_freq--;
-            inverter.set_amplitude(inv_data.output_freq);
-            digitalWrite(led,!digitalRead(led));
-        }
-        if(get_key()==DOWN_KEY){
-            delay(10);
-            inv_data.output_freq++;
-            inverter.set_amplitude(inv_data.output_freq);
-            digitalWrite(led,!digitalRead(led));
-        }
+        // if(get_key()==UP_KEY){
+        //     delay(300);
+        //     inv_data.output_AC--;
+        //     inverter.set_amplitude(inv_data.output_AC);
+        //     digitalWrite(led,!digitalRead(led));
+        // }
+        // if(get_key()==DOWN_KEY){
+        //     delay(300);
+        //     inv_data.output_AC++;
+        //     inverter.set_amplitude(inv_data.output_AC);
+        //     digitalWrite(led,!digitalRead(led));
+        // }
         if(get_key()==ENTER_KEY){
-            delay(100);
+            inverter.stop();
+            delay(400);
             digitalWrite(led,!digitalRead(led));
             if(digitalRead(led)){
-                inverter.soft_start(1);
+                inverter.soft_start(50);
             }else{
                 inverter.stop();
             }

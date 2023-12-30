@@ -4,22 +4,24 @@
 //#include <main.h>
 #include <utilities.h>
 #include <LiquidCrystal_I2C.h>
+#include <LiquidCrystal.h>
 
 
 class Display
 {
-private:
+protected:
     
     /* data */
 public:
-    Display(Inv_Data *_data);
+    Display();
+    //Display(Inv_Data *_data);
     ~Display();
-    void begin();
+    void begin(Inv_Data *_data);
     void show(int key);
     void clear();
 };
 
-class Lines{
+class Lines: Display{
 private:
 
 

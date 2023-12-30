@@ -2,7 +2,9 @@
 //#include <main.h>
 
 #include <display.hpp>
-LiquidCrystal_I2C lcd(0x07,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
+// LiquidCrystal_I2C lcd(0x07,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
+const int rs = 25, en = 26, d4 = 27, d5 = 28, d6 = 29, d7 = 30;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
 Inv_Data *data;
 
@@ -10,11 +12,12 @@ String dis_data[] ={
     "Status: ",
     "Output AC: ",
     "Input AC: ",
-        "Output Freq: ",
-       "Input Freq: ",
-       "Bat. Volt: ",
-      "Output Power: ",
-      "Carrier Freq: ",
+    "Bat. Volt: ",
+    "Input Freq: ", 
+    "Output Freq: ",  
+    "Carrier Freq: ",
+    "Output Power: "
+      
 };
 
     String Status_;
@@ -26,9 +29,9 @@ String dis_data[] ={
     String input_AC_;
     String output_AC_;
 
-Display::Display(Inv_Data *_data)
+Display::Display()//Inv_Data *_data
 {
-    data = _data;
+    // data = _data;
 }
 
 Display::~Display()
@@ -39,9 +42,10 @@ void Display::clear(){
     lcd.clear();
 }
 
-void Display::begin(){
-    lcd.init();
-    lcd.backlight();
+void Display::begin(Inv_Data *_data){
+    data = _data;
+    lcd.begin(20,4);
+    //lcd.backlight();
     lcd.clear();
     lcd.print("--SMART INVERTER--");
     lcd.setCursor(0,1);

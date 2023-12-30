@@ -49,7 +49,7 @@ public:
     bool set_output_freq(int output_freq);
     bool set_carrier_freq(int carrier_freq);
     void set_amplitude(float percent);
-    
+    void set_amplitude(int fb);
 
 };
 

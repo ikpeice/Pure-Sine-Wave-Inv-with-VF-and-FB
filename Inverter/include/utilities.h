@@ -6,9 +6,9 @@
 typedef struct Inverter_properties
 {
     bool Status;
-    float output_freq = 50; // 50Hz
+    float output_freq; // 50Hz
     float input_freq;
-    int carrier_freq = 10; //7KHz
+    int carrier_freq; //7KHz
     float batt_volt;
     float output_power;
     int input_AC;

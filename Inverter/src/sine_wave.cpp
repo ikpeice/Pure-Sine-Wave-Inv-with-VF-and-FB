@@ -1,13 +1,16 @@
 
 #include <sine_wave.hpp>
 
+int chA = 10;
+int chB = 9;
 volatile bool dt = true, ct = true;
+uint16_t feedback = 0;
 unsigned int steps = 200; // 50Hz
 volatile unsigned int counter = 0;
 int *dutyCycle_A = new int[MAX_STEPS];
 int *dutyCycle_B = new int[MAX_STEPS];
-int *_dutyCycle_A = new int[MAX_STEPS];
-int *_dutyCycle_B = new int[MAX_STEPS];
+ int *_dutyCycle_A = new  int[MAX_STEPS];
+ int *_dutyCycle_B = new  int[MAX_STEPS];
 
 ISR(TIMER1_OVF_vect){
 
@@ -23,7 +26,10 @@ ISR(TIMER1_OVF_vect){
     counter++;
     if(counter==(steps/2)){
       ct = !ct;
-      digitalWrite(10,ct);
+      digitalWrite(chB,0);
+      digitalWrite(chA,0);
+      digitalWrite(chB,ct);
+      digitalWrite(chA,!ct);
       counter=0;
     }
 
@@ -53,8 +59,8 @@ void SPWM::begin(bool verbros){
   // delete old buffer and reallocate memory with size = steps
   delete [] dutyCycle_A; 
   delete [] dutyCycle_B;
-  dutyCycle_A = new int[steps/2];
-  dutyCycle_B = new int[steps/2];
+  dutyCycle_A = new  int[steps/2];
+  dutyCycle_B = new  int[steps/2];
 
   float slope = 180/((float)steps/2); // get slope for max swing per half waveform
   for(unsigned int i=0; i<steps/2; i++){
@@ -96,8 +102,8 @@ bool SPWM::set_output_freq(int output_freq){
   delete [] _dutyCycle_B;
   dutyCycle_A = new int[steps/2];
   dutyCycle_B = new int[steps/2];
-  _dutyCycle_A = new int[steps/2];
-  _dutyCycle_B = new int[steps/2];
+  _dutyCycle_A = new  int[steps/2];
+  _dutyCycle_B = new  int[steps/2];
 
   float slope = 180/((float)steps/2); // get slope for max swing per half waveform
   for(unsigned int i=0; i<steps/2; i++){
@@ -136,10 +142,10 @@ bool SPWM::set_carrier_freq(int carrier_freq){
   delete [] dutyCycle_B;
   delete [] _dutyCycle_A;
   delete [] _dutyCycle_B;
-  dutyCycle_A = new int[steps/2];
-  dutyCycle_B = new int[steps/2];
-  _dutyCycle_A = new int[steps/2];
-  _dutyCycle_B = new int[steps/2];
+  dutyCycle_A = new  int[steps/2];
+  dutyCycle_B = new  int[steps/2];
+  _dutyCycle_A = new  int[steps/2];
+  _dutyCycle_B = new  int[steps/2];
 
   float slope = 180/((float)steps/2); // get slope for max swing per half waveform
   for(unsigned int i=0; i<steps/2; i++){
@@ -178,10 +184,7 @@ void SPWM::setup_freq(){
     // ICR1L = 0xf4;
     sei();             // Enable global interrupts.
     //DDRB = 0b00000110; // Set PB1 and PB2 as outputs.
-    pinMode(13,OUTPUT);
-    pinMode(11, OUTPUT);
-    pinMode(12, OUTPUT);
-    pinMode(10,OUTPUT);
+
 }
 
 /*
@@ -192,8 +195,14 @@ void SPWM::setup_freq(){
 */
 void SPWM::set_amplitude(float percent){
   for(unsigned int i=0; i<steps/2; i++){
-    _dutyCycle_A[i] = (percent/100)*dutyCycle_A[i]; 
-    _dutyCycle_B[i] = (percent/100)*dutyCycle_B[i]; 
+    _dutyCycle_A[i] = (percent/100)* dutyCycle_A[i]; 
+    _dutyCycle_B[i] = (percent/100)* dutyCycle_B[i]; 
+  }
+}
+void SPWM::set_amplitude(int fb){
+  for(unsigned int i=0; i<steps/2; i++){
+    dutyCycle_A[i] += fb; 
+    dutyCycle_B[i] += fb; 
   }
 }
 
@@ -280,7 +289,7 @@ void SPWM::soft_start(int _delay){
   TIMSK1 = 1;
   ON_flag = true;
   _inv_data->Status = 1;
-  for(i=i; i>0; i--){
+  for(i=i; i>50; i--){
     set_amplitude(i);
     delay(_delay);
   }
@@ -294,4 +303,6 @@ void SPWM::stop(){
   ON_flag = false;
   _inv_data->Status = 0;
   counter = 0;
+  digitalWrite(chA,0);
+  digitalWrite(chB,0);
 }
