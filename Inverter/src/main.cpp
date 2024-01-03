@@ -26,7 +26,7 @@ void setup() {
     digitalWrite(10,0);
     digitalWrite(9,0);
     Serial.begin(9600);
-    inv_data.carrier_freq = 20;
+    inv_data.carrier_freq = 10;
     inv_data.output_freq = 50;
     disp.begin(&inv_data);
 

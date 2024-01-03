@@ -3,9 +3,9 @@
  <FRAME activewindow="0">
   <PLACEMENT>2c00000002000000030000000083ffff0083ffffffffffffffffffffc30000000c000000bd060000e4030000</PLACEMENT>
   <WINDOW type="default" module="ISIS">
-   <editor metric="0" gridmajor="25400000" mode="00000010" zoom="0" scale="79" flipped="0" gridminor="508000" gridmode="32" snapidx="2" snap="254000" xcursor="0" orgmode="0" snaprange="160759">
+   <editor metric="0" gridmajor="25400000" mode="00000016" zoom="-1" scale="70" flipped="0" gridminor="508000" gridmode="32" snapidx="2" snap="254000" xcursor="0" orgmode="0" snaprange="181428">
     <world y1="-12700000" x1="-19050000" y2="12700000" x2="19050000"/>
-    <centre x="0" y="0"/>
+    <centre x="3048000" y="1270000"/>
     <origin x="0" y="0"/>
    </editor>
   </WINDOW>
@@ -18,9 +18,9 @@
   </editor>
  </MODULE>
  <MODULE name="ISIS">
-  <editor metric="0" gridmajor="25400000" mode="00000010" zoom="0" scale="79" flipped="0" gridminor="508000" gridmode="32" snapidx="2" snap="254000" xcursor="0" orgmode="0" snaprange="160759">
+  <editor metric="0" gridmajor="25400000" mode="00000016" zoom="-1" scale="70" flipped="0" gridminor="508000" gridmode="32" snapidx="2" snap="254000" xcursor="0" orgmode="0" snaprange="181428">
    <world y1="-12700000" x1="-19050000" y2="12700000" x2="19050000"/>
-   <centre x="0" y="0"/>
+   <centre x="3048000" y="1270000"/>
    <origin x="0" y="0"/>
   </editor>
  </MODULE>
@@ -57,10 +57,10 @@
    <POPUP w="574" x="146" flags="00000000" y="230" h="360" pid="0" iid="3">
     <PROPERTIES/>
    </POPUP>
-   <POPUP w="695" x="1330" flags="00008001" y="326" h="464" pid="0" iid="2">
+   <POPUP w="695" x="849" flags="00000001" y="442" h="464" pid="0" iid="2">
     <PROPERTIES/>
    </POPUP>
-   <POPUP w="450" x="191" flags="00000023" y="49" h="250" pid="0" iid="8">
+   <POPUP w="450" x="42" flags="00000023" y="47" h="250" pid="0" iid="8">
     <PROPERTIES>
      <ITEM name="AutoEcho">0</ITEM>
      <ITEM name="HexMode">0</ITEM>
@@ -128,6 +128,9 @@
      <ITEM name="ShowToolTips">Yes</ITEM>
      <ITEM name="TopLineAddress">00000020</ITEM>
     </PROPERTIES>
+   </POPUP>
+   <POPUP w="695" x="116" flags="00008001" y="400" h="464" pid="0" iid="29">
+    <PROPERTIES/>
    </POPUP>
   </PWI>
  </MODULE>
