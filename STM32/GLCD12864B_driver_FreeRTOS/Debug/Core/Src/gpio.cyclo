@@ -1,0 +1,2 @@
+../Core/Src/gpio.c:37:6:MX_GPIO_Init	1
+../Core/Src/gpio.c:89:6:MX_GPIO_Pin_Mode	2

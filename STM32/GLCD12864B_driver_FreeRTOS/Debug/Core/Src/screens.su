@@ -1,0 +1,3 @@
+../Core/Src/screens.c:36:6:clear_screen	16	static
+../Core/Src/screens.c:46:6:update_telemetry	8	static
+../Core/Src/screens.c:55:6:menu_screen	16	static
